@@ -519,5 +519,20 @@ class LinkedList
     	head=temp;
     	display();
     }
-    
+    public void addTwoLL(LL head1,LL head2)
+    {
+    	int carry=0,sum=0,temp=0;
+    	while(head1!=null&&head2!=null)
+    	{
+    		temp=head1.getData()+head2.getData();
+    		sum=carry+temp%10;
+    		carry=temp/10;
+    		head1=head1.getNext();
+    		head2=head2.getNext();
+    		if(head.getNext()!=null&&head2.getNext()!=null)
+    		 System.out.println(sum+" "+"->"+" ");
+    		else
+    			System.out.println(sum);
+    	}
+    }
 }

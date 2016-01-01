@@ -25,7 +25,8 @@ public class BinaryTree
 					+ "12.Search Element(Iterative)  13.PreOrder(Iterative)\n"
 					+ "14.Sum Of All Node  15.Minimum Depth  16.Deepest Node\n"
 					+ "17.Size of BT(Iteratively)  18.Max Depth  19.delete tree\n"
-					+ "20.Mirror Tree  21.Exit");
+					+ "20.Mirror Tree  21.Print All Paths  22.Print Leaf Nodes\n"
+					+ "23.Get the level  24.Print Nodes at a distance from root\n25.Exit");
 			x=s.nextInt();
 			switch(x)
 			{
@@ -109,8 +110,22 @@ public class BinaryTree
 				BinaryTreeNode mirrorTree=b.mirrorTree(root);
 				b.levelOrder(mirrorTree);
 				break;
+			case 21:
+				String st="";
+				b.printPath(root, st);
+				break;
+			case 22:
+				b.printLeaf(root);
+				break;
+			case 23:
+				int level=b.getLevelOfNode(root, s.nextInt());
+				System.out.println(level);
+				break;
+			case 24:
+				b.printNodes(root, s.nextInt());
+				break;
 			}
-		}while(x!=21);
+		}while(x!=25);
 	}
 
 }
@@ -598,4 +613,104 @@ class BS
 		root=null;
 	}
 	
+	//printing all the paths from root to leaf
+	public void printPath(BinaryTreeNode root,String s)
+	{
+		if(root!=null)
+			s=s+root.getData()+" ";
+		if(root.getLeft()!=null)
+			printPath(root.getLeft(),s);
+		if(root.getRight()!=null)
+			printPath(root.getRight(),s);
+		if(root.getLeft()==null&&root.getRight()==null)
+			System.out.println(s);
+	}
+	
+	//printing all the leaf nodes
+	public void printLeaf(BinaryTreeNode root)
+	{
+		Queue<BinaryTreeNode> q=new LinkedList<BinaryTreeNode>();
+		q.offer(root);
+		while(!q.isEmpty())
+		{
+			BinaryTreeNode temp=q.poll();
+			if(temp.getLeft()==null&&temp.getRight()==null)
+			{
+				System.out.println(temp.getData());
+			}
+			if(temp.getLeft()!=null)
+				q.offer(temp.getLeft());
+			if(temp.getRight()!=null)
+				q.offer(temp.getRight());
+		}
+	}
+	
+	//Get the level of a given node
+	public int getLevelOfNode(BinaryTreeNode root,int key)
+	{
+		int level=1;
+		Queue<BinaryTreeNode> q=new LinkedList<BinaryTreeNode>();
+		q.offer(root);
+		q.offer(null);
+		while(!q.isEmpty())
+		{
+			BinaryTreeNode temp=q.poll();
+			if(temp!=null)
+			{
+				if(temp.getData()==key)
+				{
+					return level;
+				}
+				if(temp.getLeft()!=null)
+					q.offer(temp.getLeft());
+				if(temp.getRight()!=null)
+					q.offer(temp.getRight());
+			}
+			else
+			{
+				if(!q.isEmpty())
+				{
+					level++;
+					q.offer(null);
+				}
+			}
+		}
+		return level;
+	}
+	
+	//Nodes at k distance
+	public void printNodes(BinaryTreeNode root,int k)
+	{
+		int level=0;
+		Queue<BinaryTreeNode> q=new LinkedList<BinaryTreeNode>();
+		q.offer(root);
+		q.offer(null);
+		while(!q.isEmpty())
+		{
+			BinaryTreeNode temp=q.poll();
+			if(temp!=null)
+			{
+				if(level==k)
+				{
+					if(temp.getLeft()!=null)
+						q.offer(temp.getLeft());
+					if(temp.getRight()!=null)
+						q.offer(temp.getRight());
+					while(temp!=null)
+					{
+						System.out.println(temp.getData());
+						temp=q.poll();
+					}
+				}
+			}
+			else
+			{
+				if(!q.isEmpty())
+				{
+					level++;
+					q.offer(null);
+				}
+			}
+		}
+	}
 }

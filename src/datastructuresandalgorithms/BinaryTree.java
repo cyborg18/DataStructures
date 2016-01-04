@@ -1,7 +1,8 @@
 package datastructuresandalgorithms;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.Scanner;
 import java.util.Stack;
@@ -26,7 +27,8 @@ public class BinaryTree
 					+ "14.Sum Of All Node  15.Minimum Depth  16.Deepest Node\n"
 					+ "17.Size of BT(Iteratively)  18.Max Depth  19.delete tree\n"
 					+ "20.Mirror Tree  21.Print All Paths  22.Print Leaf Nodes\n"
-					+ "23.Get the level  24.Print Nodes at a distance from root\n25.Exit");
+					+ "23.Get the level  24.Print Nodes at a distance from root\n"
+					+ "25.Sum ofChild  26.Check if tree is balanced  27.Exit");
 			x=s.nextInt();
 			switch(x)
 			{
@@ -47,85 +49,97 @@ public class BinaryTree
 				   b.postOrder(root);
 				   break;
 			case 5:
-				b.levelOrder(root);
-			    break;
+				   b.levelOrder(root);
+			       break;
 			case 6:
-				   b.sumOfChildren(root);
+				   BinaryTreeNode temp=b.sumOfChildren(root);
+				   b.levelOrder(temp);
 				   break;
 			case 7:
 				   b.distanceBetweenNodes(root);
-				break;
+				   break;
 			case 8:
 				   int ele=s.nextInt();
 				   if(b.FindElement(root,ele))
 				     System.out.println("Element "+ele+" is Found in the Tree");
 				   else
 					 System.out.println("Element "+ele+" is Not Found in the Tree");
-				break;
+				   break;
 			case 9:
-			      int count=b.sizeOfTree(root);
-			      System.out.println(count);
-			      break;
+			       int count=b.sizeOfTree(root);
+			       System.out.println(count);
+			       break;
 			case 10:
-				int max=b.maxInBTr(root);
-				 System.out.println(max);
-				 break;
+				   int max=b.maxInBTr(root);
+				   System.out.println(max);
+				   break;
 			case 11:
-				int max1=b.maxInBTi(root);
-				 System.out.println(max1);
+				    int max1=b.maxInBTi(root);
+				    System.out.println(max1);
 				break;
 			case 12:
-				if(b.searchElement(root,s.nextInt()))
-					System.out.println("Element Exits in the tree");
-				else
-					System.out.println("Element does not Exits in the tree");
-				break;
+				    if(b.searchElement(root,s.nextInt()))
+					 System.out.println("Element Exits in the tree");
+				    else
+					 System.out.println("Element does not Exits in the tree");
+				    break;
 			case 13:
-				b.preorderI(root);
-				break;
+				    b.preorderI(root);
+				    break;
 			case 14:
-				int sum=b.sumOfNodes(root);
-				System.out.println(sum);
-				break;
+				    int sum=b.sumOfNodes(root);
+				    System.out.println(sum);
+				    break;
 			case 15:
-				int minDepth=b.minDepth(root);
-				System.out.println(minDepth);
-				break;
+				    int minDepth=b.minDepth(root);
+				    System.out.println(minDepth);
+				    break;
 			case 16:
-				BinaryTreeNode node=b.deepestNode(root);
-				System.out.println(node.getData());
-				break;
+				    BinaryTreeNode node=b.deepestNode(root);
+				    System.out.println(node.getData());
+				    break;
 			case 17:
-				int size=b.sizeOfTreeI(root);
-				System.out.println(size);
-				break;
+				    int size=b.sizeOfTreeI(root);
+				    System.out.println(size);
+				    break;
 			case 18:
-				int maxDepth=b.maxDepth(root);
-				System.out.println(maxDepth);
-				break;
+				    int maxDepth=b.maxDepth(root);
+				    System.out.println(maxDepth);
+				    break;
 			case 19:
-				b.deleteTree(root);
-				break;
+				    b.deleteTree(root);
+				    break;
 			case 20:
-				BinaryTreeNode mirrorTree=b.mirrorTree(root);
-				b.levelOrder(mirrorTree);
-				break;
+				    BinaryTreeNode mirrorTree=b.mirrorTree(root);
+				    b.levelOrder(mirrorTree);
+				    break;
 			case 21:
-				String st="";
-				b.printPath(root, st);
-				break;
+				    String st="";
+				    b.printPath(root, st);
+				    break;
 			case 22:
-				b.printLeaf(root);
-				break;
+				    b.printLeaf(root);
+				    break;
 			case 23:
-				int level=b.getLevelOfNode(root, s.nextInt());
-				System.out.println(level);
-				break;
+				    int level=b.getLevelOfNode(root, s.nextInt());
+				    System.out.println(level);
+				    break;
 			case 24:
-				b.printNodes(root, s.nextInt());
+				    b.printNodes(root, s.nextInt());
+				    break;
+			case 25:
+				    BinaryTreeNode tempRoot=b.sumOfChild(root);
+				    b.levelOrder(tempRoot);
+				    break;
+			case 26:
+				boolean balanced=b.isBalanced(root);
+				if(balanced)
+					System.out.println("Balanced");
+				else
+					System.out.println("Not Balanced");
 				break;
 			}
-		}while(x!=25);
+		}while(x!=27);
 	}
 
 }
@@ -277,8 +291,10 @@ class BS
 		}
 	}
 	
-	//Sum of Children of all root
-	public void sumOfChildren(BinaryTreeNode root)
+	//Making root as sum of its children
+	//All the leaf nodes remain the same
+	//This method is Iterative implementation
+	public BinaryTreeNode sumOfChildren(BinaryTreeNode root)
 	{
 		Queue<BinaryTreeNode> q=new LinkedList<BinaryTreeNode>();
 		q.offer(root);
@@ -296,12 +312,39 @@ class BS
 			{
 				temp2=temp.getRight();
 				temp.setData(temp.getData()+temp2.getData());
-				System.out.println(temp.getData());
+				//System.out.println(temp.getData());
 				q.offer(temp.getRight());
 			}
-			q.poll();
-			
+			q.poll();	
 		}
+		return root;
+	}
+	
+	//Recursive method for making root(parent) as sum of its children
+	//All the leaf nodes are made as 0
+	//All the leaf nodes may be kept as it is
+	public BinaryTreeNode sumOfChild(BinaryTreeNode root)
+	{
+		BinaryTreeNode temp=null;
+		if(temp==null)
+		{
+			temp=root;
+		}
+		if(root==null)
+			return root;
+		int sumLeft=0,sumRight=0;
+		if(root.getLeft()==null&&root.getRight()==null)
+		{
+			root.setData(0);
+		}
+		if(root.getLeft()!=null)
+			sumLeft=root.getLeft().getData();
+		if(root.getRight()!=null)
+			sumRight=root.getRight().getData();
+		root.setData(sumLeft+sumRight);
+		sumOfChild(root.getLeft());
+		sumOfChild(root.getRight());
+		return temp;
 	}
 	
 	//Distance between the nodes
@@ -625,6 +668,8 @@ class BS
 		if(root.getLeft()==null&&root.getRight()==null)
 			System.out.println(s);
 	}
+
+	
 	
 	//printing all the leaf nodes
 	public void printLeaf(BinaryTreeNode root)
@@ -712,5 +757,34 @@ class BS
 				}
 			}
 		}
+	}
+	
+	//Check if a Binary Tree is balanced
+	public boolean isBalanced(BinaryTreeNode root)
+	{
+		if (root == null)
+			return true;
+ 
+		if (getHeight(root) == -1)
+			return false;
+ 
+		return true;
+	}
+    //support function for Balanced Binary Tree
+	public static int getHeight(BinaryTreeNode root) {
+		if (root == null)
+			return 0;
+ 
+		int left = getHeight(root.left);
+		int right = getHeight(root.right);
+ 
+		if (left == -1 || right == -1)
+			return -1;
+ 
+		if (Math.abs(left - right) > 1) {
+			return -1;
+		}
+ 
+		return Math.max(left, right) + 1;
 	}
 }

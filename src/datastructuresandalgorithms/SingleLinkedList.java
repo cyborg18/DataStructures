@@ -20,7 +20,7 @@ public class SingleLinkedList
 			+ "9.Rotate to right by k places  10.Cyclic or Null\n11.Reverse Pairs  12.Reverse print(rec)  "
 			+ "13.Reverse LinkedList(Iterative)  14.Reverse LinkedList(Recursive)\n"
 			+ "15.Pallindrome  16.reverse k elements of LL  17.Remove Duplicates(No Extra Space) "
-			+ "18.exit");
+			+ "18.Is Lenght Even or Odd  19.exit");
 			x=s.nextInt();
 			switch(x)
 			{
@@ -76,8 +76,11 @@ public class SingleLinkedList
 			case 17:
 				l.removeDuplicates1();
 				break;
+			case 18:
+				System.out.println(l.isEvenOdd());
+				break;
 			}
-		}while(x!=18);
+		}while(x!=19);
 		s.close();
 	}
 
@@ -322,32 +325,22 @@ class LinkedList
     //Reverse Pairs In The Given LL
     public void reversePairs()
     {
-    	LL temp=head,temp1=head;
-    	while(temp!=null)
+    	LL curr=head,next=head.getNext(),temp=null;
+    	while(curr!=null&&curr.getNext()!=null)
     	{
-    		if(temp==head)
+    		if(temp!=null&&temp.getNext()!=null&&temp.getNext().getNext()!=null)
     		{
-    			temp1=temp;
-    			temp=temp.getNext();
-    			temp1.setNext(temp.getNext());
-    			temp.setNext(temp1);
-    			head=temp;
-    		}
-    		else
-    		{
-    			temp1=temp1.getNext();
-    			temp=temp.getNext();
-    			temp=temp.getNext();
-    			temp1.setNext(temp.getNext());
-    			temp.setNext(temp1);
-    		}
-    	}
-    	temp=head;
-    	while(temp.getNext()!=null)
-    	{
-    		System.out.println(temp.getData());
+    		temp=next.getNext();
     		temp=temp.getNext();
+    		}
+    		curr.setNext(temp);
+    		temp=next.getNext();
+    		next.setNext(curr);
+    		curr=temp;
+    		if(curr.getNext()!=null)
+    		next=curr.getNext();
     	}
+    	display();
     }
     
     //Print Elements In Reverse Order
@@ -397,7 +390,7 @@ class LinkedList
     	reverseLLR(curr.getNext());
     	curr.getNext().setNext(curr);
     	curr.setNext(null);
-    	//display();
+    	display();
     }
     
     //Check For Pallindrome
@@ -534,5 +527,18 @@ class LinkedList
     		else
     			System.out.println(sum);
     	}
+    }
+    public String isEvenOdd()
+    {
+    	if(head==null)
+    		return "even";
+    	LL fp=head;
+    	while(fp!=null&&fp.getNext()!=null)
+    	{
+    		fp=fp.getNext().getNext();
+    	}
+    	if(fp==null)
+    	return "even";
+    	return "odd";
     }
 }

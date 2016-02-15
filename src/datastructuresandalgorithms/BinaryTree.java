@@ -28,7 +28,8 @@ public class BinaryTree
 					+ "17.Size of BT(Iteratively)  18.Max Depth  19.delete tree\n"
 					+ "20.Mirror Tree  21.Print All Paths  22.Print Leaf Nodes\n"
 					+ "23.Get the level  24.Print Nodes at a distance from root\n"
-					+ "25.Sum ofChild  26.Check if tree is balanced  27.Exit");
+					+ "25.Sum ofChild  26.Check if tree is balanced  27.InOrder Iterative\n"
+					+ "28.PostOder Iterative  29.Exit");
 			x=s.nextInt();
 			switch(x)
 			{
@@ -132,14 +133,20 @@ public class BinaryTree
 				    b.levelOrder(tempRoot);
 				    break;
 			case 26:
-				boolean balanced=b.isBalanced(root);
-				if(balanced)
-					System.out.println("Balanced");
-				else
-					System.out.println("Not Balanced");
-				break;
+				    boolean balanced=b.isBalanced(root);
+				    if(balanced)
+					 System.out.println("Balanced");
+				    else
+					 System.out.println("Not Balanced");
+				    break;
+			case 27:
+				   b.inOrderI(root);
+				   break;
+			case 28:
+				   b.postOrderI(root);
+				   break;
 			}
-		}while(x!=27);
+		}while(x!=29);
 	}
 
 }
@@ -258,6 +265,28 @@ class BS
 		
 	}
 	
+	//Iterative Inorder
+	public void inOrderI(BinaryTreeNode root)
+	{
+		Stack<BinaryTreeNode> s=new Stack<BinaryTreeNode>();
+		while(true)
+		{
+			if(root!=null)
+			{
+				s.add(root);
+				root=root.getLeft();
+			}
+			else
+			{
+				if(s.isEmpty())
+					break;
+				root=s.pop();
+				System.out.println(root.getData());
+				root=root.getRight();
+			}
+		}
+	}
+	
 	//Recursive PostOrder
 	public void postOrder(BinaryTreeNode root)
 	{
@@ -270,6 +299,29 @@ class BS
 		
 	}
 	
+	//PostOrder Iterative
+	public void postOrderI(BinaryTreeNode root)
+	{
+		if(root==null)
+			return;
+		Stack<BinaryTreeNode> s1=new Stack<BinaryTreeNode>();
+		Stack<BinaryTreeNode> s2=new Stack<BinaryTreeNode>();
+		s1.add(root);
+		while(!s1.isEmpty())
+		{
+			root=s1.pop();
+			s2.add(root);
+			if(root.getLeft()!=null)
+				s1.add(root.getLeft());
+			if(root.getRight()!=null)
+				s1.add(root.getRight());
+		}
+		while(!s2.isEmpty())
+		{
+			root=s2.pop();
+			System.out.println(root.getData());
+		}
+	}
 	//LevelOrder Traversal
 	public void levelOrder(BinaryTreeNode root)
 	{
